@@ -1,0 +1,36 @@
+import requests 
+import pandas as pd
+myAPIKey = 'a18f132eb4ea4bbb9eeb8137bf7ba706'
+
+stock = 'NVDA'
+balanceStatements = requests.get(f"https://financialmodelingprep.com/api/v3/balance-sheet-statement/{stock}?apikey={myAPIKey}").json()
+
+
+incomeStatements = requests.get(f'https://financialmodelingprep.com/api/v3/income-statement/{stock}?apikey={myAPIKey}').json()
+
+
+print (balanceStatements[1])
+
+#the numbers from the two most recent years
+twoYearBalanceStatement= balanceStatements[:5]
+twoYearIncomeStatement= incomeStatements[:5]
+
+
+#calculate profitability, assetTurnOver, and capitalStructure
+profitability=[]
+assetTurnOver=[]
+capitalStructure=[]
+returnOnEquity=[]
+#getting details
+for i in range (0,5):
+ profitabilityValue=twoYearIncomeStatement[i]['netIncome']/twoYearIncomeStatement[i]['revenue']
+ profitability.append(profitabilityValue)
+ assetTurnOverValue=twoYearIncomeStatement[i]['revenue']/twoYearBalanceStatement[i]['totalAssets']
+ assetTurnOver.append(assetTurnOverValue)
+ capitalStructureValue=twoYearBalanceStatement[i]['totalAssets']/twoYearBalanceStatement[i]['totalStockholdersEquity']
+ capitalStructure.append(capitalStructure)
+ returnOnEquityValue=profitabilityValue*assetTurnOverValue*capitalStructureValue
+ returnOnEquity.append(returnOnEquityValue)
+
+
+print(returnOnEquity)
